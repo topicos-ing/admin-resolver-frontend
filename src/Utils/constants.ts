@@ -1,12 +1,10 @@
 import { parse, isDate } from "date-fns";
 export const STRINGS = {
-  searchProductTitle: "Buscar productos",
-  firstName: "Nombre",
-  lastName: "Apellido",
-  memberNumber: "Número de miebro",
-  phoneNumber: "Número de telefono",
-  dob: "Fecha de nacimiento",
-  email: "Email",
+  searchProductTitle: "Buscar proveedores",
+  gtin: "Gtin",
+  uri: "Uri",
+  linkType: "Link Type",
+  language: "Lenguaje",
   results: "Resultado",
   emptyInputs: "Debe ingresar algún motivo de busqueda",
   errorEmail: "Debe ser un mail valido",

@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { STRINGS } from "Utils/constants";
 
 import MemberDetails from "../../Components/MemberDetails/MemberDetails";
 import MemberTable, {
-  MemberItem,
+  DocumentItem,
 } from "../../Components/MemberTable/MemberTable";
 import Search from "../../Components/Search/Search";
 import {
@@ -13,95 +13,25 @@ import {
   Title,
   BottomSubContainer,
 } from "./styles";
-
-// TODO GET DATA FROM BACKEND
-const rows: MemberItem[] = [
-  {
-    id: 1,
-    lastName: "Snow",
-    firstName: "Jon",
-    memberNumber: "0101",
-    phoneNumber: "888-999-0000",
-    email: "johnaseed@gmail.com",
-    dob: "01/02/1980",
-  },
-  {
-    id: 2,
-    lastName: "Lannister",
-    firstName: "Cersei",
-    memberNumber: "0120101",
-    phoneNumber: "888-999-0000",
-    email: "johnaseed@gmail.com",
-    dob: "01/02/1980",
-  },
-  {
-    id: 3,
-    lastName: "Lannister",
-    firstName: "Jaime",
-    memberNumber: "010111101",
-    phoneNumber: "888-999-0000",
-    email: "johnaseed@gmail.com",
-    dob: "01/02/1980",
-  },
-  {
-    id: 4,
-    lastName: "Stark",
-    firstName: "Arya",
-    memberNumber: "02341010",
-    phoneNumber: "888-999-0000",
-    email: "johnaseed@gmail.com",
-    dob: "01/02/1980",
-  },
-  {
-    id: 5,
-    lastName: "Targaryen",
-    firstName: "Daenerys",
-    memberNumber: "012345678",
-    phoneNumber: "888-999-0000",
-    email: "johnaseed@gmail.com",
-    dob: "01/02/1980",
-  },
-  {
-    id: 6,
-    lastName: "Melisandre",
-    firstName: "Tompson",
-    memberNumber: "012345678",
-    phoneNumber: "888-999-0000",
-    email: "johnaseed@gmail.com",
-    dob: "01/02/1980",
-  },
-  {
-    id: 7,
-    lastName: "Clifford",
-    firstName: "Ferrara",
-    memberNumber: "012345678",
-    phoneNumber: "888-999-0000",
-    email: "johnaseed@gmail.com",
-    dob: "01/02/1980",
-  },
-  {
-    id: 8,
-    lastName: "Frances",
-    firstName: "Rossini",
-    memberNumber: "012345678",
-    phoneNumber: "888-999-0000",
-    email: "johnaseed@gmail.com",
-    dob: "01/02/1980",
-  },
-  {
-    id: 9,
-    lastName: "Roxie",
-    firstName: "Harvey",
-    memberNumber: "012345678",
-    phoneNumber: "888-999-0000",
-    email: "johnaseed@gmail.com",
-    dob: "01/02/1980",
-  },
-];
+import axios from "axios";
 
 const ProductSearch = () => {
   const onSearch = (data: any) => console.log(data);
   const [isDetailsOpen, setIsDetailsOpen] = useState(true);
+
+  const [post, setPost] = useState(null);
+
+  useEffect(() => {
+    axios.get( "/products").then((response) => {
+      console.log("Productos recibidos: " + JSON.stringify(response));
+      setPost(response.data);
+    })
+    .catch(error => {
+      console.error("An error occurred getting the product data for provider.", error);
+    }); 
+  }, []);
+
+ if (!post) return null
 
   return (
     <Container>
@@ -111,7 +41,7 @@ const ProductSearch = () => {
           <Search onSearch={onSearch} />
         </TopSubContainer>
         <BottomSubContainer>
-          <MemberTable rows={rows} />
+        <MemberTable rows={post} />
         </BottomSubContainer>
       </SubContainer>
       <MemberDetails

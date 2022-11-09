@@ -1,5 +1,6 @@
 import * as React from "react";
 
+
 import {
   Box,
   Table,
@@ -27,14 +28,14 @@ import {
 } from "../../Utils/constants";
 
 interface HeadCell {
-  field: keyof MemberItem;
+  field: keyof DocumentItem;
   headerName: string;
 }
 
 interface EnhancedTableProps {
   onRequestSort: (
     event: React.MouseEvent<unknown>,
-    property: keyof MemberItem
+    property: keyof DocumentItem
   ) => void;
   order: Order;
   orderBy: string;
@@ -48,35 +49,27 @@ function EnhancedTableHead({
   numberOfResults,
 }: EnhancedTableProps) {
   const createSortHandler =
-    (property: keyof MemberItem) => (event: React.MouseEvent<unknown>) => {
+    (property: keyof DocumentItem) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
 
   const columns: HeadCell[] = [
     {
-      field: "firstName",
-      headerName: STRINGS.firstName,
+      field: "gtin",
+      headerName: STRINGS.gtin,
     },
     {
-      field: "lastName",
-      headerName: STRINGS.lastName,
+      field: "linkType",
+      headerName: STRINGS.linkType,
     },
     {
-      field: "memberNumber",
-      headerName: STRINGS.memberNumber,
+      field: "uri",
+      headerName: STRINGS.uri,
     },
     {
-      field: "phoneNumber",
-      headerName: STRINGS.phoneNumber,
-    },
-    {
-      field: "dob",
-      headerName: STRINGS.dob,
-    },
-    {
-      field: "email",
-      headerName: STRINGS.email,
-    },
+      field:  "language",
+      headerName: STRINGS.language,
+    }
   ];
 
   return (
@@ -113,25 +106,24 @@ function EnhancedTableHead({
   );
 }
 
-export interface MemberItem {
-  id: number;
-  lastName: string;
-  firstName: string;
-  memberNumber: string;
-  phoneNumber: string;
-  email: string;
-  dob: string;
+export interface DocumentItem {
+  _id: string;
+  gtin: string;
+  language: string;
+  uri: string;
+  linkType: string;
+  context: string;  
 }
 
-const MemberTable = ({ rows }: { rows: MemberItem[] }) => {
+const MemberTable = ({ rows }: { rows: DocumentItem[] }) => {
   const [order, setOrder] = React.useState<Order>("asc");
-  const [orderBy, setOrderBy] = React.useState<keyof MemberItem>("firstName");
+  const [orderBy, setOrderBy] = React.useState<keyof DocumentItem>("_id");
   const [page, setPage] = React.useState(0);
   const rowsPerPage = 6;
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof MemberItem
+    property: keyof DocumentItem
   ) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -161,19 +153,16 @@ const MemberTable = ({ rows }: { rows: MemberItem[] }) => {
             {stableSort(rows, getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
-                <TableRow key={row.id} hover tabIndex={-1}>
-                  <TableRowCell>{row.firstName}</TableRowCell>
-                  <TableRowCell>{row.lastName}</TableRowCell>
-                  <TableRowCellSelected>
-                    {row.memberNumber}
-                  </TableRowCellSelected>
-                  <TableRowCell>{row.phoneNumber}</TableRowCell>
-                  <TableRowCell>{row.dob}</TableRowCell>
-                  <TableRowCell>{row.email}</TableRowCell>
+                <TableRow key={row._id} hover tabIndex={-1}>
+                  <TableRowCell>{row.gtin}</TableRowCell>
+                  <TableRowCell>{row.uri}</TableRowCell>
+                  <TableRowCell>{row.linkType}</TableRowCell>
+                  <TableRowCell>{row.language}</TableRowCell>
                   <TableRowCell>
                     <div style={{ display: "flex", gap: 30 }}></div>
                   </TableRowCell>
                 </TableRow>
+
               ))}
           </TableBody>
         </Table>

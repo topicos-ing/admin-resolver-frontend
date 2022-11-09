@@ -18,14 +18,10 @@ const labels: {
   type?: React.HTMLInputTypeAttribute;
 }[][] = [
   [
-    { key: "firstName", label: STRINGS.firstName },
-    { key: "lastName", label: STRINGS.lastName },
-    { key: "memberNumber", label: STRINGS.memberNumber },
-  ],
-  [
-    { key: "dob", label: STRINGS.dob, type: "date" },
-    { key: "phoneNumber", label: STRINGS.phoneNumber },
-    { key: "email", label: STRINGS.email, type: "email" },
+    { key: "gtin", label: STRINGS.gtin },
+    { key: "linkType", label: STRINGS.linkType },
+    { key: "uri", label: STRINGS.uri },
+    { key: "language", label: STRINGS.language },
   ],
 ];
 
@@ -33,15 +29,7 @@ const Search = ({ onSearch }: { onSearch: SubmitHandler<FieldValues> }) => {
   const SearchSchema = yup
     .object()
     .shape({
-      firstName: yup.string(),
-      lastName: yup.string(),
-      memberNumber: yup.string().matches(numberRegExp, STRINGS.errorNumber),
-      dob: yup
-        .date()
-        .max(new Date(), STRINGS.errorDate)
-        .typeError(STRINGS.errorDate),
-      phoneNumber: yup.string().matches(numberRegExp, STRINGS.errorNumber),
-      email: yup.string().email(STRINGS.errorEmail),
+      firstName: yup.string()
     })
     .test((obj) => {
       const objKeys = Object.keys(obj);
