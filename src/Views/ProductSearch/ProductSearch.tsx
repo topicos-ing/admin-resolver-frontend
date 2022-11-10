@@ -16,22 +16,23 @@ import {
 import axios from "axios";
 
 const ProductSearch = () => {
-  const onSearch = (data: any) => console.log(data);
+  // TODO: Mostrar resultados de búsqueda.
+  const onSearch = (data: any) => axios.get("/products/" + data.gtin).then((response) => console.log(JSON.stringify(response)))
   const [isDetailsOpen, setIsDetailsOpen] = useState(true);
 
   const [post, setPost] = useState(null);
 
   useEffect(() => {
-    axios.get( "/products").then((response) => {
+    axios.get("/products").then((response) => {
       console.log("Productos recibidos: " + JSON.stringify(response));
       setPost(response.data);
     })
-    .catch(error => {
-      console.error("An error occurred getting the product data for provider.", error);
-    }); 
+      .catch(error => {
+        console.error("An error occurred getting the product data for provider.", error);
+      });
   }, []);
 
- if (!post) return null
+  if (!post) return null
 
   return (
     <Container>
@@ -41,7 +42,7 @@ const ProductSearch = () => {
           <Search onSearch={onSearch} />
         </TopSubContainer>
         <BottomSubContainer>
-        <MemberTable rows={post} />
+          <MemberTable rows={post} />
         </BottomSubContainer>
       </SubContainer>
       <MemberDetails

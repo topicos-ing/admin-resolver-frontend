@@ -1,15 +1,19 @@
 import { parse, isDate } from "date-fns";
 export const STRINGS = {
-  searchProductTitle: "Buscar proveedores",
-  gtin: "Gtin",
-  uri: "Uri",
-  linkType: "Link Type",
+  searchProductTitle: "Gestión de enlaces",
+  gtin: "GTIN",
+  uri: "URI",
+  linkType: "Tipo de link",
   language: "Lenguaje",
   results: "Resultado",
   emptyInputs: "Debe ingresar algún motivo de busqueda",
-  errorEmail: "Debe ser un mail valido",
+
+  // TODO: ¿Se utilizan los siguientes datos o se pueden elimianr?
+  // ---
+  errorEmail: "Debe ser un email válido",
   errorNumber: "Debe ser un número",
   errorDate: "Debe ser una fecha",
+  // ---
   search: "Buscar",
 };
 
