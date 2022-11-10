@@ -25,18 +25,26 @@ const labels: {
   ],
 ];
 
-const Search = ({ onSearch }: { onSearch: SubmitHandler<FieldValues> }) => {
+const Search = ({
+  onSearch,
+  onClear,
+  hasSearchData,
+}: {
+  onSearch: SubmitHandler<FieldValues>;
+  onClear: () => void;
+  hasSearchData: boolean;
+}) => {
   const SearchSchema = yup
     .object()
     .shape({
-      firstName: yup.string()
+      gtin: yup.string().matches(numberRegExp, STRINGS.errorNumber),
+      linkType: yup.string(),
+      uri: yup.string(),
+      language: yup.string(),
     })
     .test((obj) => {
       const objKeys = Object.keys(obj);
-      if (
-        objKeys.length &&
-        objKeys.filter((key) => obj[key] !== undefined).length > 0
-      ) {
+      if (objKeys.length && objKeys.filter((key) => !!obj[key]).length > 0) {
         return true;
       }
       return new yup.ValidationError(
@@ -96,6 +104,7 @@ const Search = ({ onSearch }: { onSearch: SubmitHandler<FieldValues> }) => {
       ))}
       {!!hasErrors && <ErrorMessage>{`${hasErrors}`}</ErrorMessage>}
       <ButtonContainer>
+        <Button onClick={onClear}>Reiniciar</Button>
         <Button type="submit">{STRINGS.search}</Button>
       </ButtonContainer>
     </form>

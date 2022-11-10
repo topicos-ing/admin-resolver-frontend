@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import { STRINGS } from "Utils/constants";
 
 import MemberDetails from "../../Components/MemberDetails/MemberDetails";
-import MemberTable, {
-  DocumentItem,
-} from "../../Components/MemberTable/MemberTable";
+import MemberTable from "../../Components/MemberTable/MemberTable";
 import Search from "../../Components/Search/Search";
 import {
   Container,
@@ -13,35 +11,67 @@ import {
   Title,
   BottomSubContainer,
 } from "./styles";
-import axios from "axios";
+import { getProducts, searchProducts } from "Api/apiCalls";
 
 const ProductSearch = () => {
-  const onSearch = (data: any) => axios.get("/products/" + data.gtin).then((response) => setPost(response.data))
-  const [isDetailsOpen, setIsDetailsOpen] = useState(true);
+  const [hasSearchData, setHasSearchData] = useState(false);
+  const getProds = async (params: {
+    gtin?: string;
+    linkType?: string;
+    language?: string;
+    uri?: string;
+  }) => {
+    let { gtin, language, linkType, uri } = params;
+    const newParams = {
+      gtin: !!gtin ? gtin : undefined,
+      language: !!language ? language : undefined,
+      linkType: !!linkType ? linkType : undefined,
+      uri: !!uri ? uri : undefined,
+    };
+    try {
+      let data;
+      if (Object.values(newParams).filter((value) => !!value).length === 0) {
+        data = (await getProducts()).data;
+      } else {
+        data = (await searchProducts(newParams)).data;
+      }
+      setProducts(data);
+    } catch (e) {
+      console.error(
+        "An error occurred getting the product data for provider.",
+        e
+      );
+    }
+  };
+  const onSearch = (data: any) => {
+    setHasSearchData(true);
+    getProds(data);
+  };
 
-  const [post, setPost] = useState(null);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios.get("/products").then((response) => {
-      console.log("Productos recibidos: " + JSON.stringify(response));
-      setPost(response.data);
-    })
-      .catch(error => {
-        console.error("An error occurred getting the product data for provider.", error);
-      });
+    getProds({});
   }, []);
-
-  if (!post) return null
 
   return (
     <Container>
       <SubContainer>
         <TopSubContainer>
           <Title>{STRINGS.searchProductTitle}</Title>
-          <Search onSearch={onSearch} />
+          <Search
+            onSearch={onSearch}
+            onClear={async () => {
+              await getProds({});
+              setHasSearchData(false);
+            }}
+            hasSearchData={hasSearchData}
+          />
         </TopSubContainer>
         <BottomSubContainer>
-          <MemberTable rows={post} />
+          <MemberTable rows={products} />
         </BottomSubContainer>
       </SubContainer>
       <MemberDetails

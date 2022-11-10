@@ -1,6 +1,5 @@
 import * as React from "react";
 
-
 import {
   Box,
   Table,
@@ -17,7 +16,6 @@ import {
   TableContainer,
   TableHeaders,
   TableRowCell,
-  TableRowCellSelected,
   TableButtonCellHeaders,
 } from "./styles";
 import {
@@ -26,6 +24,7 @@ import {
   getComparator,
   stableSort,
 } from "../../Utils/constants";
+import { Link } from "react-router-dom";
 
 interface HeadCell {
   field: keyof DocumentItem;
@@ -67,9 +66,9 @@ function EnhancedTableHead({
       headerName: STRINGS.uri,
     },
     {
-      field:  "language",
+      field: "language",
       headerName: STRINGS.language,
-    }
+    },
   ];
 
   return (
@@ -98,7 +97,7 @@ function EnhancedTableHead({
         ))}
         <TableButtonCellHeaders align="right" padding="normal">
           {`${numberOfResults} ${STRINGS.results}${
-            numberOfResults > 0 ? "s" : ""
+            numberOfResults !== 1 ? "s" : ""
           }`}
         </TableButtonCellHeaders>
       </TableRow>
@@ -112,7 +111,7 @@ export interface DocumentItem {
   language: string;
   uri: string;
   linkType: string;
-  context: string;  
+  context: string;
 }
 
 const MemberTable = ({ rows }: { rows: DocumentItem[] }) => {
@@ -155,14 +154,18 @@ const MemberTable = ({ rows }: { rows: DocumentItem[] }) => {
               .map((row) => (
                 <TableRow key={row._id} hover tabIndex={-1}>
                   <TableRowCell>{row.gtin}</TableRowCell>
-                  <TableRowCell>{row.uri}</TableRowCell>
+                  <TableRowCell>
+                    <Link
+                      to=""
+                      onClick={() => (window.location.href = row.uri)}
+                    >
+                      {row.uri}
+                    </Link>
+                  </TableRowCell>
                   <TableRowCell>{row.linkType}</TableRowCell>
                   <TableRowCell>{row.language}</TableRowCell>
-                  <TableRowCell>
-                    <div style={{ display: "flex", gap: 30 }}></div>
-                  </TableRowCell>
+                  <TableRowCell />
                 </TableRow>
-
               ))}
           </TableBody>
         </Table>

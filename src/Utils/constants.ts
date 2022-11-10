@@ -5,7 +5,7 @@ export const STRINGS = {
   uri: "URI",
   linkType: "Tipo de link",
   language: "Lenguaje",
-  results: "Resultado",
+  results: "resultado",
   emptyInputs: "Debe ingresar algún motivo de busqueda",
 
   // TODO: ¿Se utilizan los siguientes datos o se pueden elimianr?
