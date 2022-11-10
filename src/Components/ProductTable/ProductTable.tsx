@@ -25,6 +25,8 @@ import {
   stableSort,
 } from "../../Utils/constants";
 import { Link } from "react-router-dom";
+import { IconButton } from "Components/IconButton/IconButton";
+import { Edit } from "Assets";
 
 interface HeadCell {
   field: keyof DocumentItem;
@@ -114,7 +116,7 @@ export interface DocumentItem {
   context: string;
 }
 
-const MemberTable = ({
+const ProductTable = ({
   rows,
   openModal,
 }: {
@@ -196,4 +198,4 @@ const MemberTable = ({
   );
 };
 
-export default MemberTable;
+export default ProductTable;
