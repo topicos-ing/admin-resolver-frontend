@@ -16,8 +16,7 @@ import {
 import axios from "axios";
 
 const ProductSearch = () => {
-  // TODO: Mostrar resultados de búsqueda.
-  const onSearch = (data: any) => axios.get("/products/" + data.gtin).then((response) => console.log(JSON.stringify(response)))
+  const onSearch = (data: any) => axios.get("/products/" + data.gtin).then((response) => setPost(response.data))
   const [isDetailsOpen, setIsDetailsOpen] = useState(true);
 
   const [post, setPost] = useState(null);
