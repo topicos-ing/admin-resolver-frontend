@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import { STRINGS } from "Utils/constants";
 
 import MemberDetails from "../../Components/MemberDetails/MemberDetails";
-import MemberTable from "../../Components/MemberTable/MemberTable";
+import MemberTable, {
+  DocumentItem,
+} from "../../Components/MemberTable/MemberTable";
 import Search from "../../Components/Search/Search";
 import {
   Container,
@@ -49,6 +51,7 @@ const ProductSearch = () => {
   };
 
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [member, setMember] = useState<DocumentItem>();
 
   const [products, setProducts] = useState([]);
 
@@ -68,15 +71,24 @@ const ProductSearch = () => {
               setHasSearchData(false);
             }}
             hasSearchData={hasSearchData}
+            onCreateNew={() => setIsDetailsOpen(true)}
           />
         </TopSubContainer>
         <BottomSubContainer>
-          <MemberTable rows={products} />
+          <MemberTable
+            rows={products}
+            openModal={(member) => {
+              setMember(member);
+              setIsDetailsOpen(true);
+            }}
+          />
         </BottomSubContainer>
       </SubContainer>
       <MemberDetails
         isDetailsOpen={isDetailsOpen}
         setIsDetailsOpen={setIsDetailsOpen}
+        member={member}
+        onBack={() => getProds({})}
       />
     </Container>
   );
