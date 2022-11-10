@@ -15,6 +15,11 @@ export const STRINGS = {
   errorDate: "Debe ser una fecha",
   // ---
   search: "Buscar",
+  reset: "Reiniciar",
+  newProduct: "Crear nuevo producto",
+  product: "Product",
+  createProduct: "Crear producto",
+  editProduct: "Editar producto",
 };
 
 export type Order = "asc" | "desc";

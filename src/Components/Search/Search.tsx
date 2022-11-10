@@ -29,10 +29,12 @@ const Search = ({
   onSearch,
   onClear,
   hasSearchData,
+  onCreateNew,
 }: {
   onSearch: SubmitHandler<FieldValues>;
   onClear: () => void;
   hasSearchData: boolean;
+  onCreateNew: () => void;
 }) => {
   const SearchSchema = yup
     .object()
@@ -103,9 +105,12 @@ const Search = ({
         </Stack>
       ))}
       {!!hasErrors && <ErrorMessage>{`${hasErrors}`}</ErrorMessage>}
-      <ButtonContainer>
-        <Button onClick={onClear}>Reiniciar</Button>
-        <Button type="submit">{STRINGS.search}</Button>
+      <ButtonContainer style={{ justifyContent: "space-between" }}>
+        <Button onClick={onCreateNew}>{STRINGS.newProduct}</Button>
+        <ButtonContainer>
+          <Button onClick={onClear}>{STRINGS.reset}</Button>
+          <Button type="submit">{STRINGS.search}</Button>
+        </ButtonContainer>
       </ButtonContainer>
     </form>
   );

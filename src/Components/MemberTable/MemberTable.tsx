@@ -114,7 +114,13 @@ export interface DocumentItem {
   context: string;
 }
 
-const MemberTable = ({ rows }: { rows: DocumentItem[] }) => {
+const MemberTable = ({
+  rows,
+  openModal,
+}: {
+  rows: DocumentItem[];
+  openModal: (item: DocumentItem) => void;
+}) => {
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof DocumentItem>("_id");
   const [page, setPage] = React.useState(0);
@@ -152,12 +158,20 @@ const MemberTable = ({ rows }: { rows: DocumentItem[] }) => {
             {stableSort(rows, getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
-                <TableRow key={row._id} hover tabIndex={-1}>
+                <TableRow
+                  key={row._id}
+                  hover
+                  tabIndex={-1}
+                  onClick={() => openModal(row)}
+                >
                   <TableRowCell>{row.gtin}</TableRowCell>
                   <TableRowCell>
                     <Link
                       to=""
-                      onClick={() => (window.location.href = row.uri)}
+                      onClick={(e) => {
+                        window.location.href = row.uri;
+                        e.stopPropagation();
+                      }}
                     >
                       {row.uri}
                     </Link>
