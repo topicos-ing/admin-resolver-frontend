@@ -41,7 +41,11 @@ const ProductDetails = ({
   product,
   onBack,
 }: ProductDetailsProps) => {
-  const handleClose = () => setIsDetailsOpen(false);
+  const handleClose = () => {
+    setIsDetailsOpen(false);
+    setProduct(initialValues);
+    onBack();
+  };
   const [{ gtin, uri, linkType, language }, setProduct] =
     useState(initialValues);
 
@@ -55,16 +59,12 @@ const ProductDetails = ({
     if (!product) await createProduct({ gtin, uri, linkType, language });
     else await updateProduct(product._id, { gtin, uri, linkType, language });
     handleClose();
-    setProduct(initialValues);
-    onBack();
   };
 
   const deleteFunc = async () => {
     if (product) {
       await deleteProduct(product._id);
       handleClose();
-      setProduct(initialValues);
-      onBack();
     }
   };
 
