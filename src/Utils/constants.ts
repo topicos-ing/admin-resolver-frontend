@@ -4,7 +4,7 @@ export const STRINGS = {
   gtin: "GTIN",
   uri: "URI",
   linkType: "Tipo de link",
-  language: "Lenguaje",
+  acceptLanguage: "Lenguaje",
   results: "resultado",
   emptyInputs: "Debe ingresar algún motivo de busqueda",
 

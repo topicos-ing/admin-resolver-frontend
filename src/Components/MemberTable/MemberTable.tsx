@@ -66,8 +66,8 @@ function EnhancedTableHead({
       headerName: STRINGS.uri,
     },
     {
-      field: "language",
-      headerName: STRINGS.language,
+      field: "acceptLanguage",
+      headerName: STRINGS.acceptLanguage,
     },
   ];
 
@@ -108,7 +108,7 @@ function EnhancedTableHead({
 export interface DocumentItem {
   _id: string;
   gtin: string;
-  language: string;
+  acceptLanguage: string;
   uri: string;
   linkType: string;
   context: string;
@@ -177,7 +177,7 @@ const MemberTable = ({
                     </Link>
                   </TableRowCell>
                   <TableRowCell>{row.linkType}</TableRowCell>
-                  <TableRowCell>{row.language}</TableRowCell>
+                  <TableRowCell>{row.acceptLanguage}</TableRowCell>
                   <TableRowCell />
                 </TableRow>
               ))}

@@ -32,7 +32,7 @@ const initialValues = {
   gtin: "",
   uri: "",
   linkType: "",
-  language: "",
+  acceptLanguage: "",
 };
 
 const MemberDetails = ({
@@ -42,7 +42,7 @@ const MemberDetails = ({
   onBack,
 }: MemberDetailsProps) => {
   const handleClose = () => setIsDetailsOpen(false);
-  const [{ gtin, uri, linkType, language }, setProduct] =
+  const [{ gtin, uri, linkType, acceptLanguage }, setProduct] =
     useState(initialValues);
 
   useEffect(() => {
@@ -52,8 +52,8 @@ const MemberDetails = ({
   }, [member]);
 
   const submit = async () => {
-    if (!member) await createProduct({ gtin, uri, linkType, language });
-    else await updateProduct(member._id, { gtin, uri, linkType, language });
+    if (!member) await createProduct({ gtin, uri, linkType, acceptLanguage });
+    else await updateProduct(member._id, { gtin, uri, linkType, acceptLanguage });
     handleClose();
     setProduct(initialValues);
     onBack();
@@ -97,12 +97,12 @@ const MemberDetails = ({
                       },
                     },
                     {
-                      label: STRINGS.language,
-                      value: language,
+                      label: STRINGS.acceptLanguage,
+                      value: acceptLanguage,
                       setValue: (newValue) => {
                         setProduct((prevState) => ({
                           ...prevState,
-                          language: newValue,
+                          acceptLanguage: newValue,
                         }));
                       },
                     },
