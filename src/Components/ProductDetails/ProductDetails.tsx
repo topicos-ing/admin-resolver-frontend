@@ -6,7 +6,7 @@ import React, { useState, useEffect } from "react";
 import { Modal, Fade, Stack } from "@mui/material";
 
 import { Close } from "../../Assets";
-import MemberDetailItem from "../MemberDetailItem/MemberDetailItem";
+import ProductDetailItem from "../ProductDetailItem/ProductDetailItem";
 import {
   BackdropContainer,
   ModalContainer,
@@ -18,13 +18,13 @@ import {
 } from "./styles";
 import { STRINGS } from "../../Utils/constants";
 import { Button } from "Components/Button/Button";
-import { createProduct, updateProduct } from "Api/apiCalls";
-import { DocumentItem } from "Components/MemberTable/MemberTable";
+import { createProduct, deleteProduct, updateProduct } from "Api/apiCalls";
+import { DocumentItem } from "Components/ProductTable/ProductTable";
 
-interface MemberDetailsProps {
+interface ProductDetailsProps {
   isDetailsOpen: boolean;
   setIsDetailsOpen: (value: boolean) => void;
-  member?: DocumentItem;
+  product?: DocumentItem;
   onBack: () => void;
 }
 
@@ -35,29 +35,39 @@ const initialValues = {
   language: "",
 };
 
-const MemberDetails = ({
+const ProductDetails = ({
   isDetailsOpen,
   setIsDetailsOpen,
-  member,
+  product,
   onBack,
-}: MemberDetailsProps) => {
-  const handleClose = () => setIsDetailsOpen(false);
+}: ProductDetailsProps) => {
+  const handleClose = () => {
+    setIsDetailsOpen(false);
+    setProduct(initialValues);
+    onBack();
+  };
   const [{ gtin, uri, linkType, language }, setProduct] =
     useState(initialValues);
 
   useEffect(() => {
-    if (member) {
-      setProduct(member);
+    if (product) {
+      setProduct(product);
     }
-  }, [member]);
+  }, [product]);
 
   const submit = async () => {
-    if (!member) await createProduct({ gtin, uri, linkType, language });
-    else await updateProduct(member._id, { gtin, uri, linkType, language });
+    if (!product) await createProduct({ gtin, uri, linkType, language });
+    else await updateProduct(product._id, { gtin, uri, linkType, language });
     handleClose();
-    setProduct(initialValues);
-    onBack();
   };
+
+  const deleteFunc = async () => {
+    if (product) {
+      await deleteProduct(product._id);
+      handleClose();
+    }
+  };
+
   return (
     <Modal
       open={isDetailsOpen}
@@ -83,7 +93,7 @@ const MemberDetails = ({
             </Stack>
             <InfoContainer>
               <ColumnInfoContainer>
-                <MemberDetailItem
+                <ProductDetailItem
                   title={STRINGS.product}
                   data={[
                     {
@@ -131,12 +141,17 @@ const MemberDetails = ({
               </ColumnInfoContainer>
             </InfoContainer>
             <Button style={{ marginTop: 40 }} onClick={submit}>
-              {member ? STRINGS.editProduct : STRINGS.createProduct}
+              {product ? STRINGS.editProduct : STRINGS.createProduct}
             </Button>
+            {product && (
+              <Button style={{ marginTop: 40 }} onClick={deleteFunc}>
+                {STRINGS.deleteProduct}
+              </Button>
+            )}
           </ModalSubContainer>
         </ModalContainer>
       </Fade>
     </Modal>
   );
 };
-export default MemberDetails;
+export default ProductDetails;

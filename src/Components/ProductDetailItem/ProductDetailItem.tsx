@@ -5,7 +5,7 @@ import { Stack } from "@mui/material";
 import { Input } from "../Input/Input";
 import { Title, Line, InputLabel, Container } from "./styles";
 
-const MemberDetailItem = ({
+const ProductDetailItem = ({
   title,
   data,
   preInputs,
@@ -36,4 +36,4 @@ const MemberDetailItem = ({
   </Container>
 );
 
-export default MemberDetailItem;
+export default ProductDetailItem;
