@@ -20,6 +20,7 @@ export const STRINGS = {
   product: "Product",
   createProduct: "Crear producto",
   editProduct: "Editar producto",
+  deleteProduct: "Eliminar producto",
 };
 
 export type Order = "asc" | "desc";

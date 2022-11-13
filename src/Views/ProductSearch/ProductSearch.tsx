@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { STRINGS } from "Utils/constants";
 
-import MemberDetails from "../../Components/MemberDetails/MemberDetails";
-import MemberTable, {
+import ProductDetails from "../../Components/ProductDetails/ProductDetails";
+import ProductTable, {
   DocumentItem,
-} from "../../Components/MemberTable/MemberTable";
+} from "../../Components/ProductTable/ProductTable";
 import Search from "../../Components/Search/Search";
 import {
   Container,
@@ -51,7 +51,7 @@ const ProductSearch = () => {
   };
 
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-  const [member, setMember] = useState<DocumentItem>();
+  const [product, setProduct] = useState<DocumentItem>();
 
   const [products, setProducts] = useState([]);
 
@@ -75,19 +75,19 @@ const ProductSearch = () => {
           />
         </TopSubContainer>
         <BottomSubContainer>
-          <MemberTable
+          <ProductTable
             rows={products}
-            openModal={(member) => {
-              setMember(member);
+            openModal={(product) => {
+              setProduct(product);
               setIsDetailsOpen(true);
             }}
           />
         </BottomSubContainer>
       </SubContainer>
-      <MemberDetails
+      <ProductDetails
         isDetailsOpen={isDetailsOpen}
         setIsDetailsOpen={setIsDetailsOpen}
-        member={member}
+        product={product}
         onBack={() => getProds({})}
       />
     </Container>
