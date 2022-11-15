@@ -32,7 +32,7 @@ const initialValues = {
   gtin: "",
   uri: "",
   linkType: "",
-  language: "",
+  acceptLanguage: "",
 };
 
 const ProductDetails = ({
@@ -46,7 +46,7 @@ const ProductDetails = ({
     setProduct(initialValues);
     onBack();
   };
-  const [{ gtin, uri, linkType, language }, setProduct] =
+  const [{ gtin, uri, linkType, acceptLanguage }, setProduct] =
     useState(initialValues);
 
   useEffect(() => {
@@ -56,8 +56,8 @@ const ProductDetails = ({
   }, [product]);
 
   const submit = async () => {
-    if (!product) await createProduct({ gtin, uri, linkType, language });
-    else await updateProduct(product._id, { gtin, uri, linkType, language });
+    if (!product) await createProduct({ gtin, uri, linkType, acceptLanguage });
+    else await updateProduct(product._id, { gtin, uri, linkType, acceptLanguage });
     handleClose();
   };
 
@@ -107,12 +107,12 @@ const ProductDetails = ({
                       },
                     },
                     {
-                      label: STRINGS.language,
-                      value: language,
+                      label: STRINGS.acceptLanguage,
+                      value: acceptLanguage,
                       setValue: (newValue) => {
                         setProduct((prevState) => ({
                           ...prevState,
-                          language: newValue,
+                          acceptLanguage: newValue,
                         }));
                       },
                     },

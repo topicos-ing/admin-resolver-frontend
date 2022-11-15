@@ -21,7 +21,7 @@ const labels: {
     { key: "gtin", label: STRINGS.gtin },
     { key: "linkType", label: STRINGS.linkType },
     { key: "uri", label: STRINGS.uri },
-    { key: "language", label: STRINGS.language },
+    { key: "acceptLanguage", label: STRINGS.acceptLanguage },
   ],
 ];
 

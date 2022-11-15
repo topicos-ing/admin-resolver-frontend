@@ -20,14 +20,14 @@ const ProductSearch = () => {
   const getProds = async (params: {
     gtin?: string;
     linkType?: string;
-    language?: string;
+    acceptLanguage?: string;
     uri?: string;
   }) => {
-    let { gtin, language, linkType, uri } = params;
+    let { gtin, acceptLanguage, linkType, uri } = params;
     const newParams = {
       gtin: !!gtin ? gtin : undefined,
-      language: !!language ? language : undefined,
-      linkType: !!linkType ? linkType : undefined,
+      acceptLanguage: !! acceptLanguage ? acceptLanguage : undefined,
+      linkType: !! linkType ? linkType : undefined,
       uri: !!uri ? uri : undefined,
     };
     try {

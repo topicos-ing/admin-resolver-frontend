@@ -1,20 +1,21 @@
 import api from "Api";
 
-export const getProducts = () => api.get(`/products`);
+export const getProducts = () => api.get(`/links`);
 
 interface BackendBody {
   gtin?: string;
   linkType?: string;
-  language?: string;
+  acceptLanguage?: string;
   uri?: string;
 }
 export const searchProducts = (params: BackendBody) =>
-  api.get(`/searchProducts`, {
+  api.get(`/linksSearch`, {
     params,
   });
 
 export const createProduct = (data: BackendBody) =>
-  api.post(`/products`, { ...data });
+  api.post(`/links`, { ...data });
 export const updateProduct = (id: string, data: BackendBody) =>
-  api.put(`/products/${id}`, { ...data });
-export const deleteProduct = (id: string) => api.delete(`/products/${id}`);
+  api.put(`/links/${id}`, { ...data });
+
+export const deleteProduct = (id: string) => api.delete(`/links/${id}`);
