@@ -88,7 +88,10 @@ const ProductSearch = () => {
         isDetailsOpen={isDetailsOpen}
         setIsDetailsOpen={setIsDetailsOpen}
         product={product}
-        onBack={() => getProds({})}
+        onBack={() => {
+          setProduct(undefined);
+          getProds({});
+        }}
       />
     </Container>
   );
