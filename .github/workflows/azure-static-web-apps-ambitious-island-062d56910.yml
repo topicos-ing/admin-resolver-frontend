@@ -14,12 +14,14 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy Job
+    container:
+      options: --user 1001
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: true
       - name: Reclaim cache directory
-        run: chown -R node /github/workspace/node_modules
+        run: chown -R 1001:1001 /github/workspace/node_modules
 
       - name: Build And Deploy
         id: builddeploy
