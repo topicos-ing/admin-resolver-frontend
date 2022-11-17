@@ -19,7 +19,7 @@ jobs:
         with:
           submodules: true
       - name: Reclaim cache directory
-        run: chown -R 1001:1001 /github/workspace/node_modules/.cache
+        run: chown -R 1001:1001 ./node_modules
 
       - name: Build And Deploy
         id: builddeploy
