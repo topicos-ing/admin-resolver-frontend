@@ -60,12 +60,12 @@ function EnhancedTableHead({
       headerName: STRINGS.gtin,
     },
     {
-      field: "linkType",
-      headerName: STRINGS.linkType,
-    },
-    {
       field: "uri",
       headerName: STRINGS.uri,
+    },
+    {
+      field: "linkType",
+      headerName: STRINGS.linkType,
     },
     {
       field: "acceptLanguage",
@@ -160,12 +160,7 @@ const ProductTable = ({
             {stableSort(rows, getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
-                <TableRow
-                  key={row._id}
-                  hover
-                  tabIndex={-1}
-                  onClick={() => openModal(row)}
-                >
+                <TableRow key={row._id} hover tabIndex={-1}>
                   <TableRowCell>{row.gtin}</TableRowCell>
                   <TableRowCell>
                     <Link
@@ -180,7 +175,26 @@ const ProductTable = ({
                   </TableRowCell>
                   <TableRowCell>{row.linkType}</TableRowCell>
                   <TableRowCell>{row.acceptLanguage}</TableRowCell>
-                  <TableRowCell />
+                  <TableRowCell>
+                    <IconButton
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                      startIcon={
+                        <img
+                          src={Edit}
+                          alt="edit"
+                          width="50%"
+                          style={{
+                            filter: "invert(100%)",
+                          }}
+                        />
+                      }
+                      onClick={() => openModal(row)}
+                    />
+                  </TableRowCell>
                 </TableRow>
               ))}
           </TableBody>

@@ -3,7 +3,7 @@ export const STRINGS = {
   searchProductTitle: "Gestión de enlaces",
   gtin: "GTIN",
   uri: "URI",
-  linkType: "Tipo de link",
+  linkType: "Tipo de enlace",
   acceptLanguage: "Lenguaje",
   results: "resultado",
   emptyInputs: "Debe ingresar algún motivo de busqueda",
@@ -16,11 +16,11 @@ export const STRINGS = {
   // ---
   search: "Buscar",
   reset: "Reiniciar",
-  newProduct: "Crear nuevo producto",
-  product: "Product",
-  createProduct: "Crear producto",
-  editProduct: "Editar producto",
-  deleteProduct: "Eliminar producto",
+  newProduct: "Crear nuevo enlace",
+  product: "Enlace",
+  createProduct: "Crear enlace",
+  editProduct: "Editar enlace",
+  deleteProduct: "Eliminar enlace",
 };
 
 export type Order = "asc" | "desc";

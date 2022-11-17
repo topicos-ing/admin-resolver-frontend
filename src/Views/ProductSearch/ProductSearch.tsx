@@ -26,8 +26,8 @@ const ProductSearch = () => {
     let { gtin, acceptLanguage, linkType, uri } = params;
     const newParams = {
       gtin: !!gtin ? gtin : undefined,
-      acceptLanguage: !! acceptLanguage ? acceptLanguage : undefined,
-      linkType: !! linkType ? linkType : undefined,
+      acceptLanguage: !!acceptLanguage ? acceptLanguage : undefined,
+      linkType: !!linkType ? linkType : undefined,
       uri: !!uri ? uri : undefined,
     };
     try {
