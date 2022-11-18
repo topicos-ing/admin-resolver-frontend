@@ -20,7 +20,7 @@ jobs:
           submodules: true
 
       - name: Reclaim cache directory
-        run: chown -R 1001:1001 ./node_modules
+        run: mkdir -p node_modules/.cache && chmod -R 777 node_modules/.cache
 
       - name: Build And Deploy
         id: builddeploy
