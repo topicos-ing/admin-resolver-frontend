@@ -18,6 +18,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: true
+      - name: Reclaim cache directory
+        run: mkdir -p node_modules/.cache && chmod -R 777 node_modules/.cache
 
       - name: Build And Deploy
         id: builddeploy
