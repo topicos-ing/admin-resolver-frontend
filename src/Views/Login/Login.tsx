@@ -33,7 +33,7 @@ const LoginView = () => {
       (data)=> {
         if (data.status == 200 && data.data.tokenID) {
           localStorage.setItem('token', data.data.tokenID);
-          return navigate("/search")
+          return navigate("/")
         }
       }) 
     .catch (e => {
