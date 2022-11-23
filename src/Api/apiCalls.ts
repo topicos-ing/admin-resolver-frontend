@@ -8,6 +8,12 @@ interface BackendBody {
   acceptLanguage?: string;
   uri?: string;
 }
+
+interface UserLoginBody {
+  emial?: string;
+  password?: string;
+ }
+
 export const searchProducts = (params: BackendBody) =>
   api.get(`/linksSearch`, {
     params,
@@ -19,3 +25,5 @@ export const updateProduct = (id: string, data: BackendBody) =>
   api.put(`/links/${id}`, { ...data });
 
 export const deleteProduct = (id: string) => api.delete(`/links/${id}`);
+
+export const loginReq = (data: UserLoginBody) => api.post(`/signin`, { ...data});
