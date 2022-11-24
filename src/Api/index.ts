@@ -1,4 +1,5 @@
 import axios from "axios";
+import { setToken } from "Redux/slices/authSlice";
 import store from "Redux/store";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL;
@@ -29,8 +30,14 @@ api.interceptors.request.use((req) => {
 
 // Uncomment if is needed
 // This is executed in all the responses, we can do things with the status here.
-// api.interceptors.response.use((res) => {
-// return res;
-// });
+api.interceptors.response.use(
+  (res) => res,
+  (res) => {
+    if (res?.request?.status === 401) {
+      store.dispatch(setToken(""));
+    }
+    throw res?.response;
+  }
+);
 
 export default api;
