@@ -1,69 +1,132 @@
-import React, { useState } from "react";
-import { STRINGS } from "Utils/constants";
-import Login from "../../Components/Login/Login";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { emptyErrorEvent, mailRegExp, STRINGS } from "Utils/constants";
 
 import {
+  ButtonContainer,
   Container,
+  ErrorMessage,
   SubContainer,
-  TopSubContainer,
-  Title
+  Title,
 } from "./styles";
 import { loginReq } from "Api/apiCalls";
 
-const LoginView = () => {
-  const [hasLoginData, setHasLoginData] = useState(false);
-  const navigate = useNavigate();
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useDispatch } from "react-redux";
+import { setToken } from "Redux/slices/authSlice";
+import Stack from "@mui/material/Stack";
+import { Input } from "Components/Input/Input";
+import { Button } from "Components/Button/Button";
+import { useNavigate } from "react-router-dom";
 
-  const login = async (params: {
-    email?: string;
-    password?: string;
-  }) => {
+const labels: {
+  key: string;
+  label: string;
+  type?: React.HTMLInputTypeAttribute;
+}[][] = [
+  [
+    { key: "email", label: STRINGS.email },
+    { key: "password", label: STRINGS.password, type: "password" },
+  ],
+];
+
+const LoginView = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const LoginSchema = yup
+    .object()
+    .shape({
+      email: yup.string().matches(mailRegExp, STRINGS.errorEmail),
+      password: yup.string().min(6, STRINGS.errorPassword),
+    })
+    .test((obj) => {
+      const objKeys = Object.keys(obj);
+      if (objKeys.length && objKeys.filter((key) => !!obj[key]).length > 0) {
+        return true;
+      }
+      return new yup.ValidationError(
+        STRINGS.emptyUserData,
+        null,
+        emptyErrorEvent
+      );
+    });
+
+  const {
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm({
+    resolver: yupResolver(LoginSchema),
+  });
+
+  useEffect(() => {
+    if (errors?.[emptyErrorEvent]?.message) {
+      setError(errors[emptyErrorEvent].message.toString() || "");
+      return;
+    }
+    setError(
+      Object.values(errors)
+        .map((value) => value?.message)
+        .join("\n")
+    );
+  }, [errors]);
+
+  const login = async (params: { email?: string; password?: string }) => {
+    setIsLoading(true);
     let { email, password } = params;
     const newParams = {
       email: !!email ? email : undefined,
       password: !!password ? password : undefined,
     };
-  
-      let data;
-      if (Object.values(newParams).filter((value) => !!value).length === 0) {
-        console.log("No hay datos?")
-      } 
-      loginReq(newParams).then(
-      (data)=> {
-        if (data.status == 200 && data.data.tokenID) {
-          localStorage.setItem('token', data.data.tokenID);
-          return navigate("/")
-        }
-      }) 
-    .catch (e => {
-      console.error(
-        "An error occurred getting the token user for provider.",
-        e
-      );
-    });
-
-  }
-
-  const onLogin = (data: any) => {
-    console.log(data);
-    login(data);
-    setHasLoginData(true);
+    setError("");
+    try {
+      const { data, status } = await loginReq(newParams);
+      const token = data.tokenID;
+      if (status === 200 && token) {
+        dispatch(setToken(token));
+        navigate("/");
+      }
+    } catch (e: any) {
+      console.log(e);
+      setError(e?.response?.data?.error || "");
+    }
+    setIsLoading(false);
   };
-  
+
   return (
     <Container>
       <SubContainer>
-        <TopSubContainer>
-          <Title>{STRINGS.sayHello}</Title>
-          <Login
-            onLogin={onLogin}
-            onClear={async () => {
-              setHasLoginData(false);
-            }}
-            hasLoginData={hasLoginData}
-          />
-        </TopSubContainer>
+        <Title>{STRINGS.sayHello}</Title>
+        <form onSubmit={handleSubmit(login)}>
+          {labels.map((inputs, index) => (
+            <Stack
+              key={`${index}`}
+              direction="column"
+              spacing={2}
+              marginBottom={2}
+            >
+              {inputs.map(({ key, label, type }) => (
+                <Input
+                  key={label}
+                  id={key}
+                  label={label}
+                  error={!!errors?.[emptyErrorEvent]?.message || !!errors[key]}
+                  type={type}
+                  onChange={(e) => setValue(key, e.target.value)}
+                />
+              ))}
+            </Stack>
+          ))}
+          {!!error && <ErrorMessage>{`${error}`}</ErrorMessage>}
+          <ButtonContainer style={{ justifyContent: "center" }}>
+            <Button type="submit" loading={isLoading}>
+              {STRINGS.login}
+            </Button>
+          </ButtonContainer>
+        </form>
       </SubContainer>
     </Container>
   );

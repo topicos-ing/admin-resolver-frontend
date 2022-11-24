@@ -37,7 +37,7 @@ const ProductSearch = () => {
       } else {
         data = (await searchProducts(newParams)).data;
       }
-      setProducts(data);
+      setProducts(data || []);
     } catch (e) {
       console.error(
         "An error occurred getting the product data for provider.",

@@ -1,9 +1,9 @@
 import { parse, isDate } from "date-fns";
 export const STRINGS = {
   login: "Entrar",
-  email: "Ingrese mail",
-  password: "Ingrese contraseña",
-  sayHello: "Hola! ",
+  email: "Email",
+  password: "Contraseña",
+  sayHello: "Bienvenido!",
 
   searchProductTitle: "Gestión de enlaces",
   gtin: "GTIN",
@@ -12,13 +12,10 @@ export const STRINGS = {
   acceptLanguage: "Lenguaje",
   results: "resultado",
   emptyInputs: "Debe ingresar algún motivo de busqueda",
-  emptyUserData: "Debe ingresar los campos del usuario",
-  // TODO: ¿Se utilizan los siguientes datos o se pueden elimianr?
-  // ---
+  emptyUserData: "Rellene los datos solicitados",
   errorEmail: "Debe ser un email válido",
+  errorPassword: "Debe ser una contraseña valida",
   errorNumber: "Debe ser un número",
-  errorDate: "Debe ser una fecha",
-  // ---
   search: "Buscar",
   reset: "Reiniciar",
   newProduct: "Crear nuevo enlace",
