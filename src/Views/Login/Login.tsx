@@ -13,12 +13,13 @@ import { loginReq } from "Api/apiCalls";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "Redux/slices/authSlice";
 import Stack from "@mui/material/Stack";
 import { Input } from "Components/Input/Input";
 import { Button } from "Components/Button/Button";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { RootState } from "Redux/store";
 
 const labels: {
   key: string;
@@ -34,6 +35,8 @@ const labels: {
 const LoginView = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const userLogged = !!useSelector((store: RootState) => store.auth.token);
+
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const LoginSchema = yup
@@ -90,12 +93,14 @@ const LoginView = () => {
         navigate("/");
       }
     } catch (e: any) {
-      console.log(e);
-      setError(e?.response?.data?.error || "");
+      setError(e?.data?.error || "");
     }
     setIsLoading(false);
   };
 
+  if (userLogged) {
+    return <Navigate to="/" />;
+  }
   return (
     <Container>
       <SubContainer>
