@@ -1,5 +1,10 @@
 import { parse, isDate } from "date-fns";
 export const STRINGS = {
+  login: "Entrar",
+  email: "Email",
+  password: "Contraseña",
+  sayHello: "Bienvenido!",
+
   searchProductTitle: "Gestión de enlaces",
   gtin: "GTIN",
   uri: "URI",
@@ -7,13 +12,10 @@ export const STRINGS = {
   acceptLanguage: "Lenguaje",
   results: "resultado",
   emptyInputs: "Debe ingresar algún motivo de busqueda",
-
-  // TODO: ¿Se utilizan los siguientes datos o se pueden elimianr?
-  // ---
+  emptyUserData: "Rellene los datos solicitados",
   errorEmail: "Debe ser un email válido",
+  errorPassword: "Debe ser una contraseña valida",
   errorNumber: "Debe ser un número",
-  errorDate: "Debe ser una fecha",
-  // ---
   search: "Buscar",
   reset: "Reiniciar",
   newProduct: "Crear nuevo enlace",
@@ -48,6 +50,7 @@ export function getComparator<Key extends keyof any>(
 }
 
 export const numberRegExp = /^[0-9]*$/;
+export const mailRegExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 export const parseDateString = (value: any, originalValue: any) => {
   const parsedDate = isDate(originalValue)

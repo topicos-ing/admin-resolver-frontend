@@ -20,12 +20,16 @@ import { STRINGS } from "../../Utils/constants";
 import { Button } from "Components/Button/Button";
 import { createProduct, deleteProduct, updateProduct } from "Api/apiCalls";
 import { DocumentItem } from "Components/ProductTable/ProductTable";
+import { ArrayOfElements } from "Components/Select/Select";
 
 interface ProductDetailsProps {
   isDetailsOpen: boolean;
   setIsDetailsOpen: (value: boolean) => void;
   product?: DocumentItem;
   onBack: () => void;
+  linkTypes: ArrayOfElements;
+  gtins: ArrayOfElements;
+  languages: ArrayOfElements;
 }
 
 const initialValues = {
@@ -40,7 +44,11 @@ const ProductDetails = ({
   setIsDetailsOpen,
   product,
   onBack,
+  gtins,
+  languages,
+  linkTypes,
 }: ProductDetailsProps) => {
+  const [isLoading, setIsLoading] = useState(false);
   const handleClose = () => {
     setIsDetailsOpen(false);
     setProduct(initialValues);
@@ -56,8 +64,11 @@ const ProductDetails = ({
   }, [product]);
 
   const submit = async () => {
+    setIsLoading(true);
     if (!product) await createProduct({ gtin, uri, linkType, acceptLanguage });
-    else await updateProduct(product._id, { gtin, uri, linkType, acceptLanguage });
+    else
+      await updateProduct(product._id, { gtin, uri, linkType, acceptLanguage });
+    setIsLoading(false);
     handleClose();
   };
 
@@ -105,6 +116,7 @@ const ProductDetails = ({
                           gtin: newValue,
                         }));
                       },
+                      arrayOfElements: gtins,
                     },
                     {
                       label: STRINGS.acceptLanguage,
@@ -115,6 +127,7 @@ const ProductDetails = ({
                           acceptLanguage: newValue,
                         }));
                       },
+                      arrayOfElements: languages,
                     },
                     {
                       label: STRINGS.uri,
@@ -135,16 +148,25 @@ const ProductDetails = ({
                           linkType: newValue,
                         }));
                       },
+                      arrayOfElements: linkTypes,
                     },
                   ]}
                 />
               </ColumnInfoContainer>
             </InfoContainer>
-            <Button style={{ marginTop: 40 }} onClick={submit}>
+            <Button
+              style={{ marginTop: 40 }}
+              onClick={submit}
+              loading={isLoading}
+            >
               {product ? STRINGS.editProduct : STRINGS.createProduct}
             </Button>
             {product && (
-              <Button style={{ marginTop: 40 }} onClick={deleteFunc}>
+              <Button
+                style={{ marginTop: 40 }}
+                onClick={deleteFunc}
+                loading={isLoading}
+              >
                 {STRINGS.deleteProduct}
               </Button>
             )}

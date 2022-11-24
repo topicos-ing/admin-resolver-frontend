@@ -8,38 +8,48 @@ import * as yup from "yup";
 
 import { emptyErrorEvent, numberRegExp, STRINGS } from "../../Utils/constants";
 import { Button } from "../Button/Button";
-import { DatePicker } from "../DatePicker/DatePicker";
 import { Input } from "../Input/Input";
 import { ErrorMessage, ButtonContainer } from "./styles";
-
-const labels: {
-  key: string;
-  label: string;
-  type?: React.HTMLInputTypeAttribute;
-}[][] = [
-  [
-    { key: "gtin", label: STRINGS.gtin },
-    { key: "linkType", label: STRINGS.linkType },
-    { key: "uri", label: STRINGS.uri },
-    { key: "acceptLanguage", label: STRINGS.acceptLanguage },
-  ],
-];
+import { ArrayOfElements, Select } from "Components/Select/Select";
 
 const Search = ({
   onSearch,
   onClear,
   hasSearchData,
   onCreateNew,
+  languages,
+  linkTypes,
+  gtins,
 }: {
   onSearch: SubmitHandler<FieldValues>;
   onClear: () => void;
   hasSearchData: boolean;
   onCreateNew: () => void;
+  linkTypes: ArrayOfElements;
+  gtins: ArrayOfElements;
+  languages: ArrayOfElements;
 }) => {
+  const labels: {
+    key: string;
+    label: string;
+    arrayOfElements?: ArrayOfElements;
+  }[] = [
+    { key: "gtin", label: STRINGS.gtin, arrayOfElements: gtins },
+    { key: "linkType", label: STRINGS.linkType, arrayOfElements: linkTypes },
+    { key: "uri", label: STRINGS.uri },
+    {
+      key: "acceptLanguage",
+      label: STRINGS.acceptLanguage,
+      arrayOfElements: languages,
+    },
+  ];
   const SearchSchema = yup
     .object()
     .shape({
-      gtin: yup.string().matches(numberRegExp, STRINGS.errorNumber),
+      gtin: yup
+        .string()
+        .matches(numberRegExp, STRINGS.errorNumber)
+        .required("GTIN Requerido"),
       linkType: yup.string(),
       uri: yup.string(),
       language: yup.string(),
@@ -74,36 +84,26 @@ const Search = ({
 
   return (
     <form onSubmit={handleSubmit(onSearch)}>
-      {labels.map((inputs, index) => (
-        <Stack key={`${index}`} direction="row" spacing={2} marginBottom={2}>
-          {inputs.map(({ key, label, type }) =>
-            type === "date" ? (
-              <DatePicker
-                key={key}
-                label={label}
-                onChange={(v) => setValue(key, v?.format("MM/DD/YYYY"))}
-                renderInput={(params) => (
-                  <Input
-                    {...params}
-                    error={
-                      !!errors?.[emptyErrorEvent]?.message || !!errors[key]
-                    }
-                  />
-                )}
-              />
-            ) : (
-              <Input
-                key={label}
-                id={key}
-                label={label}
-                error={!!errors?.[emptyErrorEvent]?.message || !!errors[key]}
-                type={type}
-                onChange={(e) => setValue(key, e.target.value)}
-              />
-            )
-          )}
-        </Stack>
-      ))}
+      <Stack direction="row" spacing={2} marginBottom={2}>
+        {labels.map(({ label, key, arrayOfElements }) =>
+          arrayOfElements ? (
+            <Select
+              arrayOfElements={arrayOfElements}
+              onChange={(e) => setValue(key, e.target.value)}
+              id={key}
+              label={label}
+            />
+          ) : (
+            <Input
+              key={label}
+              id={key}
+              label={label}
+              error={!!errors?.[emptyErrorEvent]?.message || !!errors[key]}
+              onChange={(e) => setValue(key, e.target.value)}
+            />
+          )
+        )}
+      </Stack>
       {!!hasErrors && <ErrorMessage>{`${hasErrors}`}</ErrorMessage>}
       <ButtonContainer style={{ justifyContent: "space-between" }}>
         <Button onClick={onCreateNew}>{STRINGS.newProduct}</Button>
