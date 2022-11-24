@@ -1,9 +1,8 @@
+import { LoadingButtonProps } from "@mui/lab";
 import React from "react";
-
-import { ButtonProps } from "@mui/material/Button";
 
 import { StyledButton } from "./styles";
 
-export const Button = (props: ButtonProps) => (
+export const Button = (props: LoadingButtonProps) => (
   <StyledButton variant="contained" type="button" {...props} />
 );
